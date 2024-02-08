@@ -1,7 +1,6 @@
 import React from 'react';
-import { useIntl } from 'react-intl';
+//import { useIntl } from 'react-intl';
 import { Box, Typography } from '@mui/material';
-import { COLORS } from '../styles/colors';
 import '../styles/Footer.css';
 
 const Footer = () => {
@@ -18,20 +17,5 @@ const Footer = () => {
 </Box>
   );
 }
-const boxStyle = {
-  backgroundColor: COLORS.dark,
 
-  position: 'fixed',
-  bottom: 0,
-
-  width: '100%',
-  zIndex: 1,
-  right: '0px',
-  left: '0px',
-  height: '30px',
-
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'center',
-};
 export default Footer;
