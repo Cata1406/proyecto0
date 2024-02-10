@@ -1,6 +1,5 @@
 import {
     Container,
-    CssBaseline,
     Box,
     Avatar,
     Typography,
@@ -15,11 +14,12 @@ import { LockOutlined } from "@mui/icons-material";
 const LoginPage = () => {
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
+    //const [token, setToken] = useState("");
 
-    const [formValues, setFormValues] = useState({
-        username: "",
-        password: "",
-    });
+    // const [formValues, setFormValues] = useState({
+    //     username: "",
+    //     password: "",
+    // });
 
     const handleLogin = async () => {
         const response = await fetch("http://localhost:8000/users/login", {
@@ -32,6 +32,11 @@ const LoginPage = () => {
 
         if (response.status === 201) {
             window.location.href = "/";
+            // i want to save the response of the fetch in a variable
+            const data = await response.json();
+            //setToken(data.access_token);
+            localStorage.setItem("token", data.access_token);
+            localStorage.setItem("user_id", data.user_id);
         } else {
             alert("Usuario o contraseña incorrectos");
         }
@@ -58,9 +63,9 @@ const LoginPage = () => {
                             margin="normal"
                             required
                             fullWidth
-                            id="email"
-                            label="Email Address"
-                            name="email"
+                            id="username"
+                            label="Username"
+                            name="username"
                             autoFocus
                             value={username}
                             onChange={(e) => setUsername(e.target.value)}

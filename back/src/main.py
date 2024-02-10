@@ -38,9 +38,11 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-@app.get("/")
-@version(1)
-def root():
-    return RedirectResponse(url="/v1_0/docs")
 
-app = VersionedFastAPI(app)
+
+@app.get("/")
+#@version(1)
+def root():
+    return RedirectResponse(url="/docs")
+
+#app = VersionedFastAPI(app)

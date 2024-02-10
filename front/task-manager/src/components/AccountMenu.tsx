@@ -17,6 +17,8 @@ export default function AccountMenu() {
     };
     const handleClose = () => {
         setAnchorEl(null);
+        localStorage.removeItem("token");
+        window.location.href = "/login";
     };
     return (
         <>

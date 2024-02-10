@@ -17,8 +17,27 @@ import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 const Register = () => {
     const [username, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    const [profile_picture, setProfilePicture] = useState("");
 
-    const handleRegister = async () => {};
+    const handleRegister = async () => {
+        const response = await fetch("http://localhost:8000/users/", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                username: username,
+                password: password,
+                profile_picture: profile_picture,
+            }),
+        });
+
+        if (response.status === 201) {
+            window.location.href = "/login";
+        } else {
+            alert("Usuario o contraseña incorrectos");
+        }
+    };
 
     return (
         <>
@@ -70,7 +89,13 @@ const Register = () => {
                                     startIcon={<CloudUploadIcon />}
                                 >
                                     Upload picture
-                                    <VisuallyHiddenInput type="file" />
+                                    <VisuallyHiddenInput
+                                        type="file"
+                                        value={profile_picture}
+                                        onChange={(e) =>
+                                            setProfilePicture(e.target.value)
+                                        }
+                                    />
                                 </Button>
                             </Grid>
                         </Grid>

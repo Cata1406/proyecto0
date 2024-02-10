@@ -9,13 +9,19 @@ import {
     Typography,
 } from "@mui/material";
 import ThreeDots from "./ThreeDots";
+import { TaskDetails } from "./TaskList";
 
 interface TaskProps {
     setOpenPopUpEditTask: React.Dispatch<React.SetStateAction<boolean>>;
     setIsTaskUpdate: React.Dispatch<React.SetStateAction<boolean>>;
+    task_details: TaskDetails;
 }
 
-const Task = ({ setOpenPopUpEditTask, setIsTaskUpdate }: TaskProps) => {
+const Task = ({
+    setOpenPopUpEditTask,
+    setIsTaskUpdate,
+    task_details,
+}: TaskProps) => {
     return (
         <div className="task">
             <Card sx={{ display: "flex" }}>
@@ -29,9 +35,13 @@ const Task = ({ setOpenPopUpEditTask, setIsTaskUpdate }: TaskProps) => {
                             variant="h5"
                             sx={{ flexGrow: 1 }}
                         >
-                            Texto tarea
+                            {task_details.text}
                         </Typography>
-                        <TaskButtons />
+                        <TaskButtons
+                            setOpenPopUpEditTask={setOpenPopUpEditTask}
+                            setIsTaskUpdate={setIsTaskUpdate}
+                            task_details={task_details}
+                        />
                     </CardContent>
                 </Box>
                 <ThreeDots
@@ -43,11 +53,17 @@ const Task = ({ setOpenPopUpEditTask, setIsTaskUpdate }: TaskProps) => {
     );
 };
 
-const TaskButtons = () => (
+const TaskButtons = ({
+    setOpenPopUpEditTask,
+    setIsTaskUpdate,
+    task_details,
+}: TaskProps) => (
     <Stack spacing={2} direction="row">
-        {["Date", "Category", "Status"].map((text) => (
-            <Chip key={text} label={text} />
-        ))}
+        {[task_details.forseen_end_date, "Category", task_details.state].map(
+            (text) => (
+                <Chip key={text} label={text} />
+            )
+        )}
     </Stack>
 );
 
