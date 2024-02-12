@@ -13,12 +13,13 @@ import { LockOutlined } from "@mui/icons-material";
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
+import { validateHeaderValue } from "http";
 
 const Register = () => {
-    const [username, setEmail] = useState("");
+    const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
-    const [profile_picture, setProfilePicture] = useState("");
-
+    const [profile_picture, setProfilePicture] = useState("/broken-image.jpg");
+    //setProfilePicture("/broken-image.jpg");
     const handleRegister = async () => {
         const response = await fetch("http://localhost:8000/users/", {
             method: "POST",
@@ -33,7 +34,7 @@ const Register = () => {
         });
 
         if (response.status === 201) {
-            window.location.href = "/login";
+            window.location.href = "/";
         } else {
             alert("Usuario o contraseña incorrectos");
         }
@@ -65,7 +66,9 @@ const Register = () => {
                                     label="Username"
                                     name="username"
                                     value={username}
-                                    onChange={(e) => setEmail(e.target.value)}
+                                    onChange={(e) =>
+                                        setUsername(e.target.value)
+                                    }
                                 />
                             </Grid>
                             <Grid item xs={12}>
@@ -83,7 +86,19 @@ const Register = () => {
                                 />
                             </Grid>
                             <Grid item xs={12}>
-                                <Button
+                                <TextField
+                                    required
+                                    fullWidth
+                                    id="profile_picture"
+                                    label="TextField"
+                                    name="username"
+                                    value={profile_picture}
+                                    type={"url"}
+                                    onChange={(e) =>
+                                        setProfilePicture(e.target.value)
+                                    }
+                                />
+                                {/* <Button
                                     component="label"
                                     variant="contained"
                                     startIcon={<CloudUploadIcon />}
@@ -95,8 +110,8 @@ const Register = () => {
                                         onChange={(e) =>
                                             setProfilePicture(e.target.value)
                                         }
-                                    />
-                                </Button>
+                                    /> 
+                                </Button> */}
                             </Grid>
                         </Grid>
                         <Button
@@ -109,7 +124,7 @@ const Register = () => {
                         </Button>
                         <Grid container justifyContent="flex-end">
                             <Grid item>
-                                <Link to="/login">
+                                <Link to="/">
                                     Already have an account? Login
                                 </Link>
                             </Grid>

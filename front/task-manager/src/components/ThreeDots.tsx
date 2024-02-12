@@ -6,18 +6,18 @@ import MoreVertIcon from "@mui/icons-material/MoreVert";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
 
-const options = ["None", "Atria"];
-
-const ITEM_HEIGHT = 48;
-
 interface ThreeDotsProps {
     setOpenPopUpEditTask: React.Dispatch<React.SetStateAction<boolean>>;
     setIsTaskUpdate: React.Dispatch<React.SetStateAction<boolean>>;
+    task_id: string;
+    reloadTasks: () => void;
 }
 
 export default function ThreeDots({
     setOpenPopUpEditTask,
     setIsTaskUpdate,
+    task_id,
+    reloadTasks,
 }: ThreeDotsProps) {
     const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
     const open = Boolean(anchorEl);
@@ -30,6 +30,11 @@ export default function ThreeDots({
         setOpenPopUpEditTask(true);
         setAnchorEl(null);
         setIsTaskUpdate(true);
+        localStorage.setItem("task_id", task_id);
+    };
+
+    const handleClickDeleteTask = () => {
+        deleteTask({ task_id, reloadTasks });
     };
 
     const handleClose = () => {
@@ -61,7 +66,7 @@ export default function ThreeDots({
                     <EditIcon />
                     {"Edit task"}
                 </MenuItem>
-                <MenuItem onClick={handleClose}>
+                <MenuItem onClick={handleClickDeleteTask}>
                     <IconButton aria-label="delete">
                         <DeleteIcon />
                     </IconButton>
@@ -71,3 +76,23 @@ export default function ThreeDots({
         </div>
     );
 }
+
+interface deleteTaskProps {
+    task_id: string;
+    reloadTasks: () => void;
+}
+
+const deleteTask = async ({ task_id, reloadTasks }: deleteTaskProps) => {
+    const response = await fetch(`http://localhost:8000/tasks/${task_id}`, {
+        method: "DELETE",
+        headers: {
+            accept: "*/*",
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+    });
+    if (response.status == 204) {
+        reloadTasks();
+    } else {
+        alert("Failed to delete task. Please try again.");
+    }
+};

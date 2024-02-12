@@ -28,7 +28,7 @@ def get_all_categories(db: Session = Depends(get_db),token: HTTPAuthorizationCre
 
 @router.get("/{category_id}", response_model=CategoryRead, status_code=200)
 def get_category_by_id(category_id: str, db: Session = Depends(get_db), token: HTTPAuthorizationCredentials | None = Depends(get_bearer_token), Authorize: AuthJWT = Depends()):
-    authorized_admin_user(db, Authorize)
+    #authorized_admin_user(db, Authorize)
     return service.get_category_by_id(db, category_id)
 
 
@@ -41,7 +41,6 @@ def get_tasks_by_category_id(category_id: str, db: Session = Depends(get_db), to
 
 @router.post("/", response_model=CategoryRead, status_code=201)
 def create_category(category: CategoryCreate = Body(...), db: Session = Depends(get_db),token: HTTPAuthorizationCredentials | None = Depends(get_bearer_token), Authorize: AuthJWT = Depends()):
-    authorized_admin_user(db, Authorize)
     service.get_category_by_name(db, category.name)
     return service.create_category(db, category)
 
@@ -55,7 +54,7 @@ def update_category(category_id: str, category: CategoryUpdate = Body(...), db: 
 
 @router.delete("/{category_id}", response_model=None, status_code=204)
 def delete_category(category_id: str, db: Session = Depends(get_db), token: HTTPAuthorizationCredentials | None = Depends(get_bearer_token), Authorize: AuthJWT = Depends()):
-    authorized_admin_user(db, Authorize)
+    #authorized_admin_user(db, Authorize)
     db_category = service.get_category_by_id(db, category_id)
     category_task_service.remove_all_tasks_from_category(db, category_id)
     service.delete_category(db, category_id)

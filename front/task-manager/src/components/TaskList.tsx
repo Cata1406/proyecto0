@@ -1,12 +1,5 @@
 import { Box, List, ListItem } from "@mui/material";
 import Task from "./Task";
-import { useState } from "react";
-import { get } from "http";
-
-interface TaskListProps {
-    setOpenPopUpEditTask: React.Dispatch<React.SetStateAction<boolean>>;
-    setIsTaskUpdate: React.Dispatch<React.SetStateAction<boolean>>;
-}
 
 export interface TaskDetails {
     id: string;
@@ -18,18 +11,30 @@ export interface TaskDetails {
     category_id: string;
 }
 
-const TaskList = ({ setOpenPopUpEditTask, setIsTaskUpdate }: TaskListProps) => {
-    const [tasks, setTasks] = useState<TaskDetails[]>([]); // This is the state that will store the tasks
-    getTasksById(setTasks);
+interface TaskListProps {
+    setOpenPopUpEditTask: React.Dispatch<React.SetStateAction<boolean>>;
+    setIsTaskUpdate: React.Dispatch<React.SetStateAction<boolean>>;
+    tasks: TaskDetails[];
+    reloadTasks: () => void;
+}
+
+const TaskList = ({
+    setOpenPopUpEditTask,
+    setIsTaskUpdate,
+    tasks,
+    reloadTasks,
+}: TaskListProps) => {
     return (
         <Box>
             <List>
                 {tasks.map((task) => (
-                    <ListItem>
+                    <ListItem key={task.id}>
                         <Task
                             setOpenPopUpEditTask={setOpenPopUpEditTask}
                             setIsTaskUpdate={setIsTaskUpdate}
                             task_details={task}
+                            task_id={task.id}
+                            reloadTasks={reloadTasks}
                         />
                     </ListItem>
                 ))}
@@ -39,26 +44,3 @@ const TaskList = ({ setOpenPopUpEditTask, setIsTaskUpdate }: TaskListProps) => {
 };
 
 export default TaskList;
-
-const getTasksById = async (
-    setTasks: React.Dispatch<React.SetStateAction<TaskDetails[]>>
-) => {
-    const user_id = localStorage.getItem("user_id");
-    const response = await fetch(
-        `http://localhost:8000/users/${user_id}/tasks`,
-        {
-            method: "GET",
-            headers: {
-                "Content-Type": "application/json",
-                Authorization: `Bearer ${localStorage.getItem("token")}`,
-            },
-        }
-    );
-
-    if (response.status === 200) {
-        const data = await response.json();
-        setTasks(data);
-    } else {
-        alert("Error obtaining tasks");
-    }
-};

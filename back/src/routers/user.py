@@ -52,8 +52,8 @@ def login_user(user: UserBase, Authorize: AuthJWT = Depends(), db: Session = Dep
         raise HTTPException(status_code=404, detail="User not found")
     if db_user.password != user.password:
         raise HTTPException(status_code=401, detail="Invalid password")
-    access_token = Authorize.create_access_token(subject=db_user.id)
-    return {"access_token": access_token, "token_type": "bearer", "user_id": db_user.id}
+    access_token = Authorize.create_access_token(subject=db_user.id, expires_time=7200)
+    return {"access_token": access_token, "token_type": "bearer", "user_id": db_user.id, "profile_picture": db_user.profile_picture}
 
 
 @router.put("/{user_id}", response_model=UserRead, status_code=200)

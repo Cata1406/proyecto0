@@ -14,7 +14,7 @@ class TaskBase(BaseModel):
         schema_extra = {
             "example": {
                 "text": "Do the dishes",
-                "forseen_end_date": "2024-06-02T17:23:52.30Z",
+                "forseen_end_date": "2024-06-02T17:23:52.30",
                 "user_id": "60e3b2be-b29d-442c-b5ea-6337d0044a9e",
                 "category_id": "ce53abbe-d973-4033-b38b-1d20e6e5a98c"
             }
@@ -27,7 +27,7 @@ class TaskCreate(TaskBase):
         schema_extra = {
             "example": {
                 "text": "Do the dishes",
-                "forseen_end_date": "2024-06-02T17:23:52.30Z",
+                "forseen_end_date": "2024-06-02T17:23:52.30",
                 "state": "IN_PROGRESS",
                 "user_id": "60e3b2be-b29d-442c-b5ea-6337d0044a9e",
                 "category_id": "ce53abbe-d973-4033-b38b-1d20e6e5a98c"
@@ -44,8 +44,8 @@ class TaskRead(TaskBase):
             "example": {
                 "id": "4f21a77d-b8fa-47bb-8df6-b772a635bc19",
                 "text": "Do the dishes",
-                "creation_date": "2021-06-02T17:23:52.30Z",
-                "forseen_end_date": "2024-06-02T17:23:52.30Z",
+                "creation_date": "2021-06-02T17:23:52.30",
+                "forseen_end_date": "2024-06-02T17:23:52.30",
                 "state": "IN_PROGRESS",
                 "user_id": "60e3b2be-b29d-442c-b5ea-6337d0044a9e",
                 "category_id": "ce53abbe-d973-4033-b38b-1d20e6e5a98c"
@@ -63,7 +63,7 @@ class TaskUpdate(BaseModel):
         schema_extra = {
             "example": {
                 "text": "Do the dishes",
-                "forseen_end_date": "2024-06-02T17:23:52.30Z",
+                "forseen_end_date": "2024-06-02T17:23:52.30",
                 "state": "IN_PROGRESS",
                 "category_id": "ce53abbe-d973-4033-b38b-1d20e6e5a98c"
             }

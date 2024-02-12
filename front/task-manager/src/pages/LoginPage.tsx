@@ -31,12 +31,14 @@ const LoginPage = () => {
         });
 
         if (response.status === 201) {
-            window.location.href = "/";
+            window.location.href = "/home";
             // i want to save the response of the fetch in a variable
             const data = await response.json();
             //setToken(data.access_token);
             localStorage.setItem("token", data.access_token);
             localStorage.setItem("user_id", data.user_id);
+            localStorage.setItem("username", username);
+            localStorage.setItem("profile_picture", data.profile_picture);
         } else {
             alert("Usuario o contraseña incorrectos");
         }
@@ -108,3 +110,19 @@ const LoginPage = () => {
 };
 
 export default LoginPage;
+
+// const getUserById = async () => {
+//     const token = localStorage.getItem("token");
+//     const response = await fetch(
+//         `http://localhost:8000/users/${localStorage.getItem("user_id")}`,
+//         {
+//             headers: {
+//                 Authorization: `Bearer ${token}`,
+//             },
+//         }
+//     );
+//     if (response.status === 200) {
+//         const data = await response.json();
+//         localStorage.setItem("profile_picture", data.profile_picture);
+//     }
+// };

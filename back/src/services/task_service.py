@@ -30,7 +30,7 @@ def create_task(db: Session, task: TaskCreate) -> TaskModel:
     
     if not task.forseen_end_date:
         raise HTTPException(status_code = 404, detail = "Forseen end date must be provided")
-    now = datetime.now(utc)
+    now = datetime.now()
     is_valid_date(now, task.forseen_end_date)
 
     if not task.user_id:
@@ -42,28 +42,20 @@ def create_task(db: Session, task: TaskCreate) -> TaskModel:
         raise HTTPException(status_code=404, detail="Category id must be provided")
     category_found(db, task.category_id)
 
-    if not task.state:
-        new_task = TaskModel(
-            id=str(uuid4()),
-            text=task.text,
-            creation_date=now,
-            forseen_end_date=task.forseen_end_date,
-            user_id=task.user_id,
-            category_id=task.category_id
-        )
-    
-    else:
+    if task.state:
         if task.state != "TODO" and task.state != "IN_PROGRESS" and task.state != "DONE":
             raise HTTPException(status_code=400, detail="State must be TODO, IN_PROGRESS or DONE")
-        new_task = TaskModel(
-            id=str(uuid4()),
-            text=task.text,
-            creation_date=now,
-            forseen_end_date=task.forseen_end_date,
-            state=task.state,
-            user_id=task.user_id,
-            category_id=task.category_id
-        )
+
+    
+    new_task = TaskModel(
+        id=str(uuid4()),
+        text=task.text,
+        creation_date=now,
+        forseen_end_date=task.forseen_end_date,
+        user_id=task.user_id,
+        category_id=task.category_id
+    )
+    
     db.add(new_task)
     db.commit()
     db.refresh(new_task)
@@ -88,7 +80,8 @@ def update_task(db: Session, task: TaskRead, task_to_update: TaskUpdate) -> Task
     if task_to_update.category_id:
         category_found(db, task_to_update.category_id)
         task.category_id = task_to_update.category_id
-    
+    print(task.creation_date)
+    print(task.forseen_end_date)
     db.commit()
     db.refresh(task)
     return task
